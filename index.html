@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculadora de Grama/Metro - Sacola Plástica</title>
+    <style>
+      :root {
+        --cor-primaria: #CE0024;
+        --cor-secundaria: #9e001c;
+        --cor-fundo: #fff5f6;
+        --cor-texto: #2e1114;
+        --cor-borda: #f2c4ca;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(135deg, #ffe9ec 0%, var(--cor-fundo) 100%);
+        color: var(--cor-texto);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .card {
+        width: min(100%, 780px);
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 18px 40px rgba(16, 30, 54, 0.12);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(90deg, var(--cor-secundaria) 0%, var(--cor-primaria) 100%);
+        color: #fff;
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .header h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .header .logo {
+        max-width: 180px;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        filter: brightness(0) invert(1);
+      }
+
+      .content {
+        padding: 32px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .field label {
+        font-weight: 700;
+      }
+
+      .field input,
+      .field select {
+        padding: 12px 14px;
+        border: 1px solid var(--cor-borda);
+        border-radius: 10px;
+        font-size: 15px;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        outline: 2px solid rgba(30, 136, 229, 0.2);
+        border-color: var(--cor-primaria);
+      }
+
+      .mode-group {
+        display: flex;
+        gap: 12px;
+        margin-top: 0;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .mode-option {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: #fff7f8;
+        border: 1px solid var(--cor-borda);
+        border-radius: 999px;
+        padding: 8px 12px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: none;
+        border-radius: 10px;
+        padding: 12px 18px;
+        font-size: 15px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .btn-calc {
+        background: var(--cor-primaria);
+        color: #fff;
+      }
+
+      .btn-reset {
+        background: #ffe7eb;
+        color: var(--cor-secundaria);
+      }
+
+      .results {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .result-card {
+        background: #fffafc;
+        border: 1px solid var(--cor-borda);
+        border-radius: 14px;
+        padding: 18px;
+      }
+
+      .result-card h3 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        color: var(--cor-secundaria);
+      }
+
+      .result-card .value {
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .result-card .subvalue {
+        margin-top: 6px;
+        color: #55657a;
+        font-size: 13px;
+      }
+
+      .helper {
+        margin-top: 12px;
+        font-size: 14px;
+        color: #66758a;
+      }
+
+      @media (max-width: 700px) {
+        .grid,
+        .results {
+          grid-template-columns: 1fr;
+        }
+
+        .content {
+          padding: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <section class="header">
+        <div>
+          <h1>Calculadora de Grama/Metro</h1>
+        </div>
+        <img class="logo" src="https://eecb228a797030b98fa15c17574519e9.cdn.bubble.io/f1784745717522x241675296624392920/logotipo%20RGB-23.png" alt="Logo da empresa" />
+      </section>
+
+      <section class="content">
+        <form id="calculatorForm">
+          <div class="grid">
+            <div class="field">
+              <label for="largura">Largura (cm)</label>
+              <input id="largura" name="largura" type="number" step="0.01" min="0" placeholder="Ex.: 40" required />
+            </div>
+
+            <div class="field">
+              <label for="altura">Altura (cm)</label>
+              <input id="altura" name="altura" type="number" step="0.01" min="0" placeholder="Ex.: 60" required />
+            </div>
+          </div>
+
+          <div class="grid" style="margin-top: 16px;">
+            <div class="field">
+              <label for="peso">Peso (g)</label>
+              <input id="peso" name="peso" type="number" step="0.01" min="0" placeholder="Ex.: 12" />
+            </div>
+
+            <div class="field">
+              <label for="espessura">Espessura (µm)</label>
+              <input id="espessura" name="espessura" type="number" step="0.001" min="0" placeholder="Ex.: 20" />
+            </div>
+          </div>
+
+              <div class="field" style="margin-top: 12px;">
+            <div class="mode-group">
+              <label style="font-weight: 700;">Preencher:</label>
+              <label class="mode-option">
+                <input type="radio" name="modo" value="peso" checked />
+                <span>Peso</span>
+              </label>
+              <label class="mode-option">
+                <input type="radio" name="modo" value="espessura" />
+                <span>Espessura</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn-calc" type="button" id="btnCalcular">Calcular</button>
+            <button class="btn-reset" type="button" id="btnReset">Limpar</button>
+          </div>
+
+          <p class="helper">Ao preencher peso ou espessura, o valor oposto é atualizado automaticamente.</p>
+        </form>
+
+        <section class="results" id="results" aria-live="polite">
+          <article class="result-card">
+            <h3>Alvo filme</h3>
+            <div class="value" id="alvoFilme">—</div>
+            <div class="subvalue">Peso ÷ 0,88</div>
+          </article>
+
+          <article class="result-card">
+            <h3>Grama / metro</h3>
+            <div class="value" id="gramaMetro">—</div>
+            <div class="subvalue">5 metros: <span id="cincoMetros">—</span></div>
+          </article>
+
+          <article class="result-card">
+            <h3>Gravimétrico</h3>
+            <div class="value" id="gravimetrico">—</div>
+            <div class="subvalue">2 pistas: <span id="duasPistas">—</span></div>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      const larguraInput = document.getElementById('largura');
+      const alturaInput = document.getElementById('altura');
+      const pesoInput = document.getElementById('peso');
+      const espessuraInput = document.getElementById('espessura');
+      const btnCalcular = document.getElementById('btnCalcular');
+      const btnReset = document.getElementById('btnReset');
+      const alvoFilmeEl = document.getElementById('alvoFilme');
+      const gramaMetroEl = document.getElementById('gramaMetro');
+      const cincoMetrosEl = document.getElementById('cincoMetros');
+      const gravimetricoEl = document.getElementById('gravimetrico');
+      const duasPistasEl = document.getElementById('duasPistas');
+
+      function formatNumber(value, decimals = 2) {
+        if (value === null || value === undefined || Number.isNaN(value)) {
+          return '—';
+        }
+        return Number(value).toLocaleString('pt-BR', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        });
+      }
+
+      function calcularPeso(largura, altura, espessura) {
+        return (largura * altura * (espessura / 10) * 0.95) * 0.88;
+      }
+
+      function calcularEspessura(largura, altura, peso) {
+        return (peso * 10) / (largura * altura * 0.95 * 0.88);
+      }
+
+      function getModoSelecionado() {
+        return document.querySelector('input[name="modo"]:checked').value;
+      }
+
+      function atualizarCampoContrario() {
+        const modo = getModoSelecionado();
+        const largura = Number(larguraInput.value);
+        const altura = Number(alturaInput.value);
+        const peso = Number(pesoInput.value);
+        const espessura = Number(espessuraInput.value);
+
+        if (!largura || !altura) {
+          return;
+        }
+
+        if (modo === 'peso' && peso) {
+          const espessuraCalculada = calcularEspessura(largura, altura, peso);
+          espessuraInput.value = espessuraCalculada.toFixed(3);
+        } else if (modo === 'espessura' && espessura) {
+          const pesoCalculado = calcularPeso(largura, altura, espessura);
+          pesoInput.value = pesoCalculado.toFixed(4);
+        }
+      }
+
+      function calcular() {
+        const largura = Number(larguraInput.value);
+        const altura = Number(alturaInput.value);
+        const modo = getModoSelecionado();
+
+        if (!largura || !altura) {
+          alert('Informe largura e altura para calcular.');
+          return;
+        }
+
+        let peso = Number(pesoInput.value);
+        let espessura = Number(espessuraInput.value);
+
+        if (modo === 'peso') {
+          if (!peso) {
+            alert('Informe o peso para calcular.');
+            return;
+          }
+          espessura = calcularEspessura(largura, altura, peso);
+          espessuraInput.value = espessura.toFixed(3);
+        } else {
+          if (!espessura) {
+            alert('Informe a espessura para calcular.');
+            return;
+          }
+          peso = calcularPeso(largura, altura, espessura);
+          pesoInput.value = peso.toFixed(4);
+        }
+
+        const alvoFilme = peso / 0.88;
+        const gramaMetro = (alvoFilme * 100) / altura;
+        const gravimetrico = gramaMetro * 1.06;
+
+        alvoFilmeEl.textContent = `${formatNumber(alvoFilme, 2)} g`;
+        gramaMetroEl.textContent = `${formatNumber(gramaMetro, 2)} g/m`;
+        cincoMetrosEl.textContent = `${formatNumber(gramaMetro * 5, 2)} g`;
+        gravimetricoEl.textContent = `${formatNumber(gravimetrico, 2)} g/m`;
+        duasPistasEl.textContent = `${formatNumber(gravimetrico * 2, 2)} g`;
+      }
+
+      function resetar() {
+        document.getElementById('calculatorForm').reset();
+        document.querySelector('input[name="modo"][value="peso"]').checked = true;
+        alvoFilmeEl.textContent = '—';
+        gramaMetroEl.textContent = '—';
+        cincoMetrosEl.textContent = '—';
+        gravimetricoEl.textContent = '—';
+        duasPistasEl.textContent = '—';
+      }
+
+      [larguraInput, alturaInput, pesoInput, espessuraInput].forEach((input) => {
+        input.addEventListener('input', atualizarCampoContrario);
+      });
+
+      document.querySelectorAll('input[name="modo"]').forEach((radio) => {
+        radio.addEventListener('change', atualizarCampoContrario);
+      });
+
+      btnCalcular.addEventListener('click', calcular);
+      btnReset.addEventListener('click', resetar);
+    </script>
+  </body>
+</html>
