@@ -175,14 +175,65 @@
         color: #66758a;
       }
 
+      .footer-mobile {
+        display: none;
+      }
+
       @media (max-width: 700px) {
+        body {
+          padding: 12px;
+        }
+
+        .header {
+          padding: 16px 18px;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .header h1 {
+          font-size: 18px;
+          line-height: 1.2;
+          text-align: center;
+        }
+
+        .header .logo {
+          display: none;
+        }
+
+        .content {
+          padding: 20px;
+        }
+
         .grid,
         .results {
           grid-template-columns: 1fr;
         }
 
-        .content {
-          padding: 24px;
+        .mode-group {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        .mode-option {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .footer-mobile {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 16px;
+          padding-top: 12px;
+          border-top: 1px solid var(--cor-borda);
+        }
+
+        .footer-mobile img {
+          width: 180px;
+          height: auto;
+          object-fit: contain;
         }
       }
     </style>
@@ -263,6 +314,10 @@
             <div class="subvalue">2 pistas: <span id="duasPistas">—</span></div>
           </article>
         </section>
+
+        <div class="footer-mobile">
+          <img src="logo_footer.png" alt="Logo do rodapé" />
+        </div>
       </section>
     </main>
 
