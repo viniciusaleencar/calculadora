@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Visão global de Produção</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f4f4f4;--card:#fff;--tx:#1d1b1a;--mut:#757069;--ln:#e5e2dd;--red:#b3261e;
+--fin:#0f766e;--finb:#d5efeb;--pro:#15803d;--prob:#dcf5e3;--que:#6d28d9;--queb:#ece4fb;--prg:#1d4ed8;--prgb:#dce7fd;--pen:#8a857d;--penb:#efede9;--prz:#b45309;--przb:#fdebcf}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161514;--card:#201f1d;--tx:#f1efec;--mut:#a09b93;--ln:#34322f;--red:#f0675e;
+--fin:#5eead4;--finb:#123a36;--pro:#86efac;--prob:#143d22;--que:#c4b0fb;--queb:#2f2352;--prg:#9db9fb;--prgb:#182a57;--pen:#a09b93;--penb:#2b2926;--prz:#fbbf6a;--przb:#47320f}}
+:root[data-theme="dark"]{--bg:#161514;--card:#201f1d;--tx:#f1efec;--mut:#a09b93;--ln:#34322f;--red:#f0675e;--fin:#5eead4;--finb:#123a36;--pro:#86efac;--prob:#143d22;--que:#c4b0fb;--queb:#2f2352;--prg:#9db9fb;--prgb:#182a57;--pen:#a09b93;--penb:#2b2926;--prz:#fbbf6a;--przb:#47320f}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:1100px;margin:0 auto;padding:16px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+h1{margin:2px 0 0;font-size:24px}.bc{color:var(--mut);font-size:13px}
+.btn{background:var(--red);color:#fff;border:0;border-radius:999px;padding:10px 18px;font-weight:600;font-size:14px}
+.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0}
+.sc{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px;text-align:left;color:var(--tx);cursor:pointer;font:inherit}
+.sc.on{outline:2px solid var(--tx)}
+.sc b{display:block;font-size:13px;color:var(--mut);font-weight:600}
+.sc .n{font-size:28px;font-weight:700;line-height:1.1;margin-top:4px}
+.sc .n small{font-size:12px;font-weight:500;color:var(--mut)}
+.sc .s{font-size:12px;color:var(--mut);margin-top:4px}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.bar input{flex:1;min-width:200px;padding:10px 12px;border:1px solid var(--ln);border-radius:10px;background:var(--card);color:var(--tx);font:inherit}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer}
+.chip.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.seg{display:inline-flex;border:1px solid var(--ln);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--card);color:var(--tx);padding:8px 14px;font-size:13px;cursor:pointer}
+.seg button.on{background:var(--tx);color:var(--bg)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mut);margin:0 0 12px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px;vertical-align:-1px}
+.cards{display:grid;grid-template-columns:1fr;gap:10px}
+.o{background:var(--card);border:1px solid var(--ln);border-left:5px solid var(--c);border-radius:12px;padding:12px}
+.o .t{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.o .op{font-weight:700;font-size:16px}.o .pr{font-size:13px;color:var(--mut);margin-top:2px}
+.o .cl{font-size:13px;font-weight:600}
+.sit{font-size:12px;font-weight:700;color:var(--c);background:var(--cb);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.flow{display:flex;align-items:flex-start;margin-top:12px}
+.st{flex:1;text-align:center;position:relative;min-width:0}
+.st:not(:last-child)::after{content:"";position:absolute;top:13px;left:calc(50% + 14px);right:calc(-50% + 14px);height:2px;background:var(--ln)}
+.st.d:not(:last-child)::after{background:var(--fin)}
+.ic{width:26px;height:26px;border-radius:50%;margin:0 auto;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--b);color:var(--f);border:2px solid var(--f)}
+.st .nm{font-size:11px;margin-top:4px;color:var(--mut);line-height:1.2}
+.st .tg{font-size:11px;font-weight:700;color:var(--f)}
+.st.cur .nm{color:var(--tx);font-weight:700}
+.F{--f:var(--fin);--b:var(--finb)}.P{--f:var(--pro);--b:var(--prob)}.Q{--f:var(--que);--b:var(--queb)}.G{--f:var(--prg);--b:var(--prgb)}.D{--f:var(--pen);--b:var(--penb)}.Z{--f:var(--prz);--b:var(--przb)}
+.P .ic{background:var(--pro);color:var(--bg)}
+.F .ic{background:var(--fin);color:var(--bg)}
+.D .ic{border-style:dashed}
+.pb{height:4px;border-radius:4px;background:var(--ln);margin-top:10px;overflow:hidden}.pb i{display:block;height:100%;background:var(--fin)}
+.board{display:grid;grid-template-columns:repeat(5,minmax(210px,1fr));gap:10px;overflow-x:auto;padding-bottom:6px}
+.col{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px}
+.col h3{margin:0 0 8px;font-size:14px}
+.grp{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--f);margin:10px 0 4px}
+.it{border:1px solid var(--ln);border-left:4px solid var(--f);border-radius:8px;padding:6px 8px;margin-bottom:5px;font-size:13px}
+.it b{display:block}.it span{color:var(--mut);font-size:12px}
+.lanes{display:flex;flex-direction:column;gap:10px}
+.ln{display:flex;gap:10px;background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px 10px 8px}
+.lh{flex:0 0 92px}.lh b{display:block;font-size:14px}.lh span{font-size:12px;color:var(--mut)}
+.tr{display:flex;gap:6px;overflow-x:auto;flex:1;padding:6px 0 4px}
+.bk{flex:0 0 auto;min-width:112px;max-width:150px;text-align:left;border:1px solid var(--f);border-left-width:5px;background:var(--b);color:var(--tx);border-radius:8px;padding:6px 8px;font:inherit;font-size:12px;cursor:pointer;position:relative}
+.bk b{display:block;font-size:13px}.bk span{display:block;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bk u{text-decoration:none;font-weight:700;color:var(--f);font-size:11px}
+.bk em{position:absolute;top:-8px;right:6px;font-style:normal;font-size:9px;font-weight:700;background:var(--pro);color:var(--bg);border-radius:6px;padding:1px 5px}
+.bk.hl{outline:2px solid var(--tx)}.bk.dim{opacity:.35}.bk.ghost{border-style:dashed;opacity:.85}
+.jr{background:var(--card);border:1px solid var(--tx);border-radius:12px;padding:10px 12px;margin-bottom:10px;font-size:13px}
+.jr .jf{margin-top:6px;line-height:1.9}.jr .jf span{white-space:nowrap}
+.hint{font-size:13px;color:var(--mut);margin:0 0 10px}
+.cards{gap:6px}
+.o{display:grid;grid-template-columns:minmax(200px,1fr) 2fr;gap:14px;align-items:center;padding:8px 14px;border-radius:10px}
+.o .oi{min-width:0}
+.o .l1{display:flex;gap:8px;align-items:baseline;min-width:0}
+.o .op{font-size:15px;flex:0 0 auto}
+.o .cl{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.o .pr{font-size:12px;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.o .sit{display:inline-block;margin-top:4px;font-size:11px;padding:2px 9px}
+.o .flow{margin:0}
+.o .ic{width:20px;height:20px;font-size:10px}
+.o .st:not(:last-child)::after{top:9px;left:calc(50% + 13px);right:calc(-50% + 13px)}
+.o .st .nm{font-size:10px;margin-top:2px}
+.o .st .tg{display:none}
+.o .st.cur .tg{display:block;font-size:10px}
+@media (max-width:640px){.o{grid-template-columns:1fr;gap:8px}}
+:root{--rail:#ebebeb}
+body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.app{display:flex;min-height:100vh}
+.rail{flex:0 0 50px;width:50px;background:var(--rail);position:sticky;top:0;align-self:flex-start;height:100vh;display:flex;flex-direction:column;align-items:center;padding:16px 0}
+.burger{width:40px;height:40px;border-radius:50%;border:0;background:#fff;color:#1d1b1a;display:grid;place-items:center;margin-top:34px;cursor:pointer;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.avatar{width:40px;height:40px;border-radius:50%;background:#d9736a;margin-top:auto}
+.menu{display:none;flex:0 0 285px;width:285px;background:#fff;color:#1d1b1a;border-right:1px solid #e5e5e5;padding-top:50px}
+.menu.open{display:block}
+.mi{display:block;width:100%;text-align:left;border:0;background:none;color:#1d1b1a;font:inherit;font-size:15px;padding:10px 24px;cursor:pointer;border-left:3px solid transparent;margin-bottom:6px}
+.mi:hover{background:#f5f5f5}
+.mi.on{font-weight:600;border-left-color:#b3261e;background:#faf3f2}
+.main{flex:1;min-width:0}.main .w{margin:0}
+@media (max-width:899px){.rail{flex-basis:44px;width:44px}.menu.open{position:fixed;left:44px;top:0;bottom:0;width:min(285px,80vw);z-index:20;box-shadow:4px 0 16px rgba(0,0,0,.2);padding-top:calc(50px + env(safe-area-inset-top,0px))}}
+.empty{text-align:center;color:var(--mut);padding:30px}
+.note{font-size:12px;color:var(--mut);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="rail">
+  <svg width="30" height="30" viewBox="0 0 30 30" aria-label="Logo"><path d="M5 5h15l5 5v15H10l-5-5z" fill="none" stroke="#c00f14" stroke-width="3.5" stroke-linejoin="round"/></svg>
+  <button class="burger" id="burger" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 4h14M2 9h14M2 14h14"/></svg></button>
+  <div class="avatar"></div>
+</aside>
+<nav class="menu" id="menu">
+  <button class="mi">Ordens de Produção</button>
+  <button class="mi">Programação</button>
+  <button class="mi">Fila de Produção</button>
+  <button class="mi on">Visão Global</button>
+</nav>
+<main class="main">
+<div class="w">
+<header>
+  <div><div class="bc">Produção › Visão Global</div><h1>Visão global de Produção</h1></div>
+  <button class="btn">nova produção</button>
+</header>
+
+<div class="stages" id="stages"></div>
+
+<div class="bar">
+  <input id="q" type="search" placeholder="Pesquise por número ou cliente">
+  <div class="seg"><button id="v1" class="on">Por pedido</button><button id="v2">Por etapa</button><button id="v3">Por máquina</button></div>
+</div>
+<div class="bar"><div class="chips" id="chips"></div></div>
+
+<div class="legend">
+  <span><i class="dot" style="background:var(--pro)"></i>Em produção</span>
+  <span><i class="dot" style="background:var(--que)"></i>Na fila</span>
+  <span><i class="dot" style="background:var(--prg)"></i>Programado</span>
+  <span><i class="dot" style="background:var(--prz)"></i>Produzido (falta finalizar)</span>
+  <span><i class="dot" style="background:var(--pen)"></i>Pendente (aguarda etapa anterior)</span>
+  <span><i class="dot" style="background:var(--fin)"></i>Finalizado</span>
+</div>
+
+<div id="out"></div>
+<div class="note">Etapas que a OP não utiliza não aparecem no fluxo. A ordem dentro de cada etapa segue o número da OP.</div>
+</div>
+</main></div>
+
+<script>
+const ST=['Extrusão','Impressão','Refilo','Corte e Solda','Sacoleira'];
+const LB={F:'Finalizado',P:'Em produção',Q:'Na fila',G:'Programado',D:'Pendente',Z:'Produzido'};
+const SH={F:'✓',P:'▶',Q:'…',G:'◷',D:'',Z:'!'};
+const COL={P:['--pro','--prob'],Q:['--que','--queb'],G:['--prg','--prgb'],D:['--pen','--penb'],Z:['--prz','--przb'],F:['--fin','--finb']};
+const PA='SAC PLAST BP PEAD…',AC='SAC PLAST AC PEAD…';
+const D=[
+['0481',PA,'Embalagens Padrao','F-FD-'],['0483',PA,'Embalagens Padrao','F-FD-'],['0484',PA,'Embalagens Padrao','F--D-'],
+['0547',PA,'Embalagens Padrao','F-DD-'],['0563',PA,'Embalagens Padrao','F-DD-'],['0577','BOB PLAST TB PEBDL…','ESTOQUE','G----'],
+['0586','SACO PLAST SL…','ESTOQUE','F--G-'],['0593','SACO PLAST SL…','Embalagens Padrao','F--G-'],['0605','SAC PLAST AC PEBDL…','Embalagens Padrao','F---G'],
+['0608','SACO PLAST SP…','MANDIOCA SELEÇÃO DA…','QD-D-'],['0609','SACO PLAST SP…','Embalagens Padrao','P--D-'],['0612',PA,'Embalagens Padrao','F-DD-'],
+['0614','BOB PLAST TB PEAD…','ESTOQUE','G----'],['0618',AC,'JBR CASTANHAS','FZ--Q'],['0619',AC,'REDE DA CONSTRUÇÃO','FQ--Q'],
+['0620',AC,'REDE DA CONSTRUÇÃO','FQ--Q'],['0622',AC,'SUPERMERCADO SANTA…','FQ--Q'],['0624',AC,'BEATRIZ CONFECÇÕES','FF--Q'],
+['0628',PA,'Embalagens Padrao','Q-QQ-'],['0629',PA,'Embalagens Padrao','Q-QQ-'],['0639',AC,'LM CONFECÇÕES','FQ--Q'],
+['0640',AC,'ENXOVAIS PINHEIRO','FF--P'],['0644',AC,'JBR CASTANHAS','FF--G'],['0645',AC,'Embalagens Padrao','F---P'],
+['0647',AC,'Embalagens Padrao','F---Q'],['0648',AC,'Embalagens Padrao','Q---G'],['0649',AC,'Embalagens Padrao','Q---Q'],
+['0652',PA,'LOJAS VANMAR','FPQQ-'],['0653',PA,'LOJAS VANMAR','FPQQ-'],['0654',PA,'LOJAS VANMAR','FQQQ-'],
+['0655','SACO PLAST SL PEAD…','ESTOPAS LÍDER 150G','FQ-Q-']
+].map(([op,pr,cl,s])=>{
+  const st=[...s].map((c,i)=>c==='-'?null:{n:ST[i],c,i}).filter(Boolean);
+  const cur=st.find(x=>x.c!=='F')||null;
+  const any=c=>st.some(x=>x.c===c);
+  const sit=any('P')?'P':any('Z')?'Z':any('Q')?'Q':any('G')?'G':'D';
+  return {op,pr,cl,st,cur,sit,done:st.filter(x=>x.c==='F').length};
+});
+let stage=null,sit=null,view=1,q='';
+const $=id=>document.getElementById(id);
+const norm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function sitText(o){const p=o.st.filter(x=>x.c===o.sit);const n=p.map(x=>x.n).join(' e ');
+  return {P:'Produzindo em '+n,Z:'Produzido em '+n,Q:'Na fila de '+n,G:'Programado em '+n,D:'Pendente em '+n}[o.sit];}
+function list(){return D.filter(o=>(!stage||o.st.some(x=>x.n===stage&&x.c!=='F'))&&(!sit||o.sit===sit)&&(!q||norm('OP '+o.op+' '+o.cl+' '+o.pr).includes(norm(q))));}
+function drawStages(){
+  $('stages').innerHTML=ST.map(n=>{
+    const a=D.flatMap(o=>o.st.filter(x=>x.n===n));
+    const c=k=>a.filter(x=>x.c===k).length;
+    return `<button class="sc ${stage===n?'on':''}" data-s="${n}"><b>${n}</b><div class="n">${c('P')}<small> em produção</small></div>
+    <div class="s">${c('Q')} na fila · ${c('G')} prog. · ${c('D')} pend.<br>${c('F')} finalizadas</div></button>`}).join('');
+  $('stages').querySelectorAll('.sc').forEach(b=>b.onclick=()=>{stage=stage===b.dataset.s?null:b.dataset.s;draw()});
+}
+function drawChips(){
+  const ch=[[null,'Todas'],['P','Em produção'],['Z','Produzido'],['Q','Na fila'],['G','Programado'],['D','Pendente']];
+  $('chips').innerHTML=ch.map(([k,t])=>{const n=D.filter(o=>(!k||o.sit===k)).length;return `<button class="chip ${sit===k?'on':''}" data-k="${k}">${t} (${n})</button>`}).join('');
+  $('chips').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{sit=b.dataset.k==='null'?null:b.dataset.k;draw()});
+}
+function card(o){
+  const [c,cb]=COL[o.sit];
+  const flow=o.st.map(x=>`<div class="st ${x.c} ${x.c==='F'?'d':''} ${o.cur===x?'cur':''}"><div class="ic">${SH[x.c]}</div><div class="nm">${x.n}</div><div class="tg">${LB[x.c]}</div></div>`).join('');
+  return `<div class="o" style="--c:var(${c});--cb:var(${cb})"><div class="oi"><div class="l1"><span class="op">OP ${o.op}</span><span class="cl">${o.cl}</span></div><div class="pr">${o.pr}</div><span class="sit">${sitText(o)}</span></div>
+  <div class="flow">${flow}</div>
+  </div>`;
+}
+function board(L){
+  const order=['P','Z','Q','G','D'];
+  return '<div class="board">'+ST.map(n=>{
+    const items=L.flatMap(o=>o.st.filter(x=>x.n===n&&x.c!=='F').map(x=>({o,x})));
+    const body=order.map(k=>{const g=items.filter(i=>i.x.c===k);
+      return g.length?`<div class="grp ${k}">${LB[k]} (${g.length})</div>`+g.map(i=>`<div class="it ${k}"><b>OP ${i.o.op}</b><span>${i.o.cl}</span></div>`).join(''):''}).join('');
+    return `<div class="col"><h3>${n} <span style="color:var(--mut);font-weight:400">· ${items.length}</span></h3>${body||'<span class="note">Nada pendente</span>'}</div>`}).join('')+'</div>';
+}
+let hl=null;
+function lanes(L){
+  const ord=['P','Z','Q','G','D'];
+  const sel=hl?D.find(o=>o.op===hl):null;
+  let h='';
+  if(sel)h+=`<div class="jr"><b>OP ${sel.op} · ${sel.cl}</b> <button class="chip" id="clr">limpar</button><div class="jf">${sel.st.map(x=>`<span class="${x.c}"><i class="dot" style="background:var(--f)"></i>${x.n}: ${LB[x.c]}`+'</span>').join(' → ')}</div></div>`;
+  else h+='<p class="hint">Cada linha é uma máquina, com a fila de OPs de quem está produzindo agora até quem ainda está pendente. Toque numa OP para ver onde ela está em todas as máquinas.</p>';
+  h+='<div class="lanes">'+ST.map(n=>{
+    const it=L.flatMap(o=>o.st.filter(x=>x.n===n&&x.c!=='F').map(x=>({o,x}))).sort((a,b)=>ord.indexOf(a.x.c)-ord.indexOf(b.x.c)||a.o.op.localeCompare(b.o.op));
+    const ghost=sel&&sel.st.some(x=>x.n===n&&x.c==='F')?`<div class="bk F ghost"><b>OP ${sel.op}</b><u>✓ já passou</u></div>`:'';
+    const bl=it.map((i,k)=>`<button class="bk ${i.x.c} ${hl===i.o.op?'hl':''} ${hl&&hl!==i.o.op?'dim':''}" data-op="${i.o.op}">${k===0&&i.x.c==='P'?'<em>AGORA</em>':''}<b>OP ${i.o.op}</b><span>${i.o.cl}</span><u>${LB[i.x.c]}</u></button>`).join('');
+    return `<div class="ln"><div class="lh"><b>${n}</b><span>${it.length} em aberto</span></div><div class="tr">${ghost}${bl||'<span class="note">Sem OPs em aberto</span>'}</div></div>`}).join('')+'</div>';
+  return h;
+}
+function draw(){
+  drawStages();drawChips();
+  const L=list();
+  $('v1').className=view===1?'on':'';$('v2').className=view===2?'on':'';$('v3').className=view===3?'on':'';
+  $('out').innerHTML=!L.length?'<div class="empty">Nenhuma ordem encontrada.</div>':view===1?'<div class="cards">'+L.map(card).join('')+'</div>':view===2?board(L):lanes(L);
+  $('out').querySelectorAll('.bk').forEach(b=>b.onclick=()=>{hl=hl===b.dataset.op?null:b.dataset.op;draw()});
+  const cl=$('clr');if(cl)cl.onclick=()=>{hl=null;draw()};
+}
+$('q').oninput=e=>{q=e.target.value;draw()};
+$('v1').onclick=()=>{view=1;draw()};$('v2').onclick=()=>{view=2;draw()};$('v3').onclick=()=>{view=3;draw()};
+const mn=$('menu');if(innerWidth>=900)mn.classList.add('open');
+$('burger').onclick=()=>mn.classList.toggle('open');
+mn.querySelectorAll('.mi').forEach(b=>b.onclick=()=>{if(innerWidth<900)mn.classList.remove('open')});
+draw();
+</script>
+</body>
+</html>
